@@ -167,7 +167,7 @@ fun SignIn(navController: NavController) {
                         shape = RoundedCornerShape(100)
                     )
                     .clickable(
-//                        enabled = isFormFilled && !viewModel.isLoading.value
+                        enabled = isFormFilled && !viewModel.isLoading.value
                     ) {
 //                        viewModel.signIn(
 //                            "ahmad.irza18@gmail.com", "12345678"
