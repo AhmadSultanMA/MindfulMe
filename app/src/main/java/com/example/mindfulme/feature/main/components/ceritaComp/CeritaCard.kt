@@ -42,10 +42,6 @@ import com.example.mindfulme.ui.theme.Purple9
 @Composable
 fun CeritaCard(navController: NavController) {
     Box(modifier = Modifier
-        .shadow(
-            elevation = 2.dp,
-            RoundedCornerShape(12.dp)
-        )
         .background(color = Black1, shape = RoundedCornerShape(12.dp))
         .padding(16.dp)
         .clickable {
