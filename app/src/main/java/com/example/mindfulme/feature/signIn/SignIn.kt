@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mindfulme.R
 import com.example.mindfulme.feature.main.route.Screen
@@ -56,6 +58,7 @@ import com.example.mindfulme.ui.theme.Black6
 import com.example.mindfulme.ui.theme.Black7
 import com.example.mindfulme.ui.theme.Purple10
 import com.example.mindfulme.ui.theme.Purple6
+import kotlinx.coroutines.delay
 
 @Composable
 fun SignIn(navController: NavController) {
@@ -63,6 +66,24 @@ fun SignIn(navController: NavController) {
     val password = remember { mutableStateOf("") }
     val isFormFilled = email.value.isNotEmpty() && password.value.isNotEmpty()
     var isChecked by remember { mutableStateOf(false) }
+    val viewModel : SignInViewModel = viewModel()
+
+    LaunchedEffect(viewModel.errMsg.value) {
+        if (viewModel.errMsg.value.isNotEmpty()) {
+            delay(3000)
+            viewModel.errMsg.value = ""
+        }
+    }
+
+    LaunchedEffect(key1 = viewModel.isLogin.value){
+        if(viewModel.isLogin.value == true){
+            navController.navigate(Screen.KuisScreen.route) {
+                popUpTo(Screen.SignIn.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -130,9 +151,9 @@ fun SignIn(navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = Purple6,
                     modifier = Modifier.clickable {
-//                    navController.navigate(Screen.SignIn.route) {
-//                        popUpTo(Screen.SignIn.route) { inclusive = true }
-//                    }
+                        navController.navigate(Screen.ForgotPass.route) {
+                            popUpTo(Screen.SignIn.route) { inclusive = true }
+                        }
                     }
                 )
             }
@@ -142,15 +163,22 @@ fun SignIn(navController: NavController) {
                     .fillMaxWidth()
                     .height(50.dp)
                     .background(
-                        color = if (isFormFilled) Purple6 else Black4,
+                        color = if (isFormFilled && !viewModel.isLoading.value) Purple6 else Black4,
                         shape = RoundedCornerShape(100)
                     )
-                    .clickable(enabled = isFormFilled) {
-                        if (isFormFilled) {
-//                        navController.navigate(Screen.SignIn.route) {
-//                           popUpTo(Screen.SignIn.route) { inclusive = true }
-//                    }
-                        }
+                    .clickable(
+//                        enabled = isFormFilled && !viewModel.isLoading.value
+                    ) {
+                        viewModel.signIn(
+                            "ahmad.irza18@gmail.com", "12345678"
+                        )
+//                        if (isFormFilled) {
+//                            viewModel.signIn(
+//                                email.value,password.value
+//                            )
+//                        }else{
+//                            viewModel.errMsg.value = "Harap isi semua kolom"
+//                        }
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -160,7 +188,11 @@ fun SignIn(navController: NavController) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(5.dp))
+            Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp), contentAlignment = Alignment.Center){
+                Text(text = viewModel.errMsg.value,style = MaterialTheme.typography.bodySmall, color = Color.Red)
+            }
+            Spacer(modifier = Modifier.height(11.dp))
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Spacer(
                     modifier = Modifier

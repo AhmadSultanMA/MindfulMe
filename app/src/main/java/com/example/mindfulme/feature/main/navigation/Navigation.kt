@@ -4,9 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mindfulme.feature.bacaCerita.BacaCerita
+import com.example.mindfulme.feature.cerita.Cerita
 import com.example.mindfulme.feature.changePass.ChangePass
 import com.example.mindfulme.feature.forgotPass.ForgotPass
 import com.example.mindfulme.feature.home.Home
+import com.example.mindfulme.feature.kuisioner.HasilKuis
+import com.example.mindfulme.feature.kuisioner.KuisScreen
+import com.example.mindfulme.feature.kuisioner.SoalKuis
 import com.example.mindfulme.feature.main.route.Screen
 import com.example.mindfulme.feature.notification.Notification
 import com.example.mindfulme.feature.onBoard.OnBoard
@@ -54,6 +59,26 @@ fun Navigation() {
 
         composable(route = Screen.Notification.route) {
             Notification(navController = navController)
+        }
+
+        composable(route = Screen.Cerita.route) {
+            Cerita(navController = navController)
+        }
+
+        composable(route = Screen.BacaCerita.route) {
+            BacaCerita(navController = navController)
+        }
+
+        composable(route = Screen.SoalKuis.route) {
+            SoalKuis(navController = navController)
+        }
+
+        composable(route = Screen.KuisScreen.route) {
+            KuisScreen(navController = navController)
+        }
+
+        composable(route = Screen.HasilKuis.route) {
+            HasilKuis(navController = navController)
         }
     }
 }

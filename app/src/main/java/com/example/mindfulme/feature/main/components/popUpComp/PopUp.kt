@@ -1,4 +1,4 @@
-package com.example.mindfulme.feature.main.components.PopUpComp
+package com.example.mindfulme.feature.main.components.popUpComp
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
