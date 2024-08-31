@@ -42,11 +42,11 @@ fun Psikolog(navController: NavController) {
                 item {
                     Text(text = "Konsultasi Psikolog", style = MaterialTheme.typography.displaySmall, color = Purple10)
                     Spacer(modifier = Modifier.height(20.dp))
-                    PsikologCard()
+                    PsikologCard(navController)
                     Spacer(modifier = Modifier.height(16.dp))
-                    PsikologCard()
+                    PsikologCard(navController)
                     Spacer(modifier = Modifier.height(16.dp))
-                    PsikologCard()
+                    PsikologCard(navController)
                 }
             }
         }

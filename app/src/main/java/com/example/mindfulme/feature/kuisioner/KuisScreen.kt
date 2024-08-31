@@ -34,11 +34,13 @@ import com.example.mindfulme.ui.theme.Purple6
 fun KuisScreen(navController: NavController) {
     val viewModel : KuisViewModel = viewModel()
 
-    LaunchedEffect(key1 = true){
-        if(viewModel.user.value?.phqScore?.toInt() != -1){
-            navController.navigate(Screen.Home.route) {
-                popUpTo(Screen.KuisScreen.route) {
-                    inclusive = true
+    LaunchedEffect(key1 = viewModel.user){
+        viewModel.user.value?.let {
+            if (it.phqScore.toInt() != -1) {
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.KuisScreen.route) {
+                        inclusive = true
+                    }
                 }
             }
         }

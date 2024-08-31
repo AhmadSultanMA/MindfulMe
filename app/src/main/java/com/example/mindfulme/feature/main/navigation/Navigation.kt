@@ -20,6 +20,7 @@ import com.example.mindfulme.feature.main.route.Screen
 import com.example.mindfulme.feature.notification.Notification
 import com.example.mindfulme.feature.onBoard.OnBoard
 import com.example.mindfulme.feature.otp.Otp
+import com.example.mindfulme.feature.profilPsikolog.ProfilPsikolog
 import com.example.mindfulme.feature.profile.Profile
 import com.example.mindfulme.feature.psikolog.Psikolog
 import com.example.mindfulme.feature.signIn.SignIn
@@ -108,6 +109,10 @@ fun Navigation() {
 
         composable(route = Screen.Psikolog.route) {
             Psikolog(navController = navController)
+        }
+
+        composable(route = Screen.ProfilPsikolog.route) {
+            ProfilPsikolog(navController = navController)
         }
     }
 }
