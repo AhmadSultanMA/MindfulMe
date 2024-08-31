@@ -102,10 +102,10 @@ fun SoalKuis(navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier
-                        .background(color = Purple6, shape = RoundedCornerShape(20))
+                        .background(color = if(viewModel.nomor.value <= 1) Black5 else Purple6, shape = RoundedCornerShape(20))
                         .clickable
                         {
-                            if (viewModel.nomor.value > 0) {
+                            if (viewModel.nomor.value > 1) {
                                 viewModel.nomor.value -= 1
                             }
                         }

@@ -2,6 +2,7 @@ package com.example.mindfulme.feature.main.components.homeComp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.mindfulme.R
+import com.example.mindfulme.feature.main.route.Screen
 import com.example.mindfulme.ui.theme.Black1
 import com.example.mindfulme.ui.theme.Black10
 import com.example.mindfulme.ui.theme.Black6
@@ -32,12 +35,19 @@ import com.example.mindfulme.ui.theme.Purple10
 import com.example.mindfulme.ui.theme.Purple6
 
 @Composable
-fun PsikologCard() {
+fun PsikologCard(navController: NavController) {
     Box(
         modifier = Modifier
             .height(130.dp)
             .fillMaxWidth(0.8f)
             .background(color = Purple1, shape = RoundedCornerShape(20))
+            .clickable {
+                navController.navigate(Screen.ProfilPsikolog.route) {
+                    popUpTo(Screen.Home.route) {
+                        inclusive = true
+                    }
+                }
+            }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

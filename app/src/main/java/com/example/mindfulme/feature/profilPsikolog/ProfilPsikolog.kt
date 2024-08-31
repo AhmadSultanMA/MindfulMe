@@ -110,27 +110,28 @@ fun ProfilPsikolog(navController: NavController) {
                             }
                         }
                         Spacer(modifier = Modifier.height(36.dp))
-                    }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = Purple6, shape = RoundedCornerShape(100))
-                            .padding(horizontal = 10.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_chat),
-                                contentDescription = "iconchat",
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "Chat",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Black1
-                            )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = Purple6, shape = RoundedCornerShape(100))
+                                .padding(vertical = 10.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_chat),
+                                    contentDescription = "iconchat",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = "Chat",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Black1
+                                )
+                            }
                         }
                     }
+
                 }
             }
         }

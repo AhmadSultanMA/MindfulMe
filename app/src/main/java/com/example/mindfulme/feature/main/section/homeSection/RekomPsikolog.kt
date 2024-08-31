@@ -28,6 +28,6 @@ fun RekomPsikolog(navController: NavController) {
             LihatButton(onClick = {})
         }
         Spacer(modifier = Modifier.height(16.dp))
-        PsikologCard()
+        PsikologCard(navController)
     }
 }
