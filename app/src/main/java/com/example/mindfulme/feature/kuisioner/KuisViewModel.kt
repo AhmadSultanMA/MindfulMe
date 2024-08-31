@@ -20,12 +20,14 @@ class KuisViewModel : ViewModel() {
     val mapJawaban = mutableListOf<MutableState<Long>>()
     val isDone = mutableStateOf(false)
     val user = mutableStateOf<UserModel?>(null)
+    val phqScore = mutableStateOf<Long?>(null)
 
     init{
         authRepository.getUser(
             auth.currentUser?.uid ?: "",
             onSuccess = {
                 user.value = it
+                phqScore.value = it.phqScore
             },
             onFailed = {
                 Log.e("Gagal", it.toString())

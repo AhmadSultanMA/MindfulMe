@@ -158,6 +158,55 @@ class Repository constructor(
         }
     }
 
+    fun editCerita(
+        ceritaId: String,
+        gambar: String?,
+        isi: String,
+        judul: String,
+        kategori: List<String>,
+        onSuccess: (Boolean) -> Unit,
+        onFailed: (Exception) -> Unit
+    ) {
+        val imageUploadTask = if (gambar != null) {
+            val imageRef = storageRef.child("images/${System.currentTimeMillis()}_${gambar.split('/').last()}")
+            imageRef.putFile(Uri.parse(gambar)).continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
+                imageRef.downloadUrl
+            }
+        } else {
+            Tasks.forResult(null)
+        }
+
+        imageUploadTask.addOnSuccessListener { uri ->
+            val imageUrl = uri?.toString()
+            val uid = auth.currentUser?.uid ?: ""
+
+            firestore.collection("cerita")
+                .document(ceritaId)
+                .update(
+                    mapOf(
+                        "gambar" to (imageUrl ?: ""),
+                        "isi" to isi,
+                        "judul" to judul,
+                        "kategori" to kategori,
+                        "user_id" to uid
+                    )
+                )
+                .addOnSuccessListener {
+                    onSuccess(true)
+                }
+                .addOnFailureListener { exception ->
+                    onFailed(exception)
+                }
+        }.addOnFailureListener { exception ->
+            onFailed(exception)
+        }
+    }
+
+
+
     fun getAllCerita(
         onSuccess: (List<CeritaModel>) -> Unit,
         onFailed: (Exception) -> Unit

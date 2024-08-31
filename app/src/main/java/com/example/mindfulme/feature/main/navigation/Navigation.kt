@@ -11,6 +11,7 @@ import com.example.mindfulme.feature.buatCerita.BuatCerita
 import com.example.mindfulme.feature.cerita.Cerita
 import com.example.mindfulme.feature.ceritaKu.CeritaKu
 import com.example.mindfulme.feature.changePass.ChangePass
+//import com.example.mindfulme.feature.editCerita.EditCerita
 import com.example.mindfulme.feature.forgotPass.ForgotPass
 import com.example.mindfulme.feature.home.Home
 import com.example.mindfulme.feature.kuisioner.HasilKuis
@@ -114,5 +115,16 @@ fun Navigation() {
         composable(route = Screen.ProfilPsikolog.route) {
             ProfilPsikolog(navController = navController)
         }
+
+//        composable(route = "${Screen.EditCerita.route}/{cerita_id}",
+//            arguments = listOf(
+//                navArgument("cerita_id") {
+//                    type = NavType.StringType
+//                }
+//            ))
+//        {
+//            val cerita_id = it.arguments?.getString("cerita_id") ?: ""
+//            EditCerita(navController = navController, cerita_id)
+//        }
     }
 }
