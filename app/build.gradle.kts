@@ -62,6 +62,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("com.google.firebase:firebase-firestore:24.10.3")
     implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation ("com.google.firebase:firebase-storage-ktx:20.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -85,4 +86,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     implementation ("androidx.compose.material:material-icons-extended:<latest-version>")
+
+    implementation ("io.coil-kt:coil-compose:2.2.0")
+
+
 }

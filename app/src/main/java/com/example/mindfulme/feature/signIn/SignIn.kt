@@ -167,18 +167,18 @@ fun SignIn(navController: NavController) {
                         shape = RoundedCornerShape(100)
                     )
                     .clickable(
-                        enabled = isFormFilled && !viewModel.isLoading.value
+//                        enabled = isFormFilled && !viewModel.isLoading.value
                     ) {
-//                        viewModel.signIn(
-//                            "ahmad.irza18@gmail.com", "12345678"
-//                        )
-                        if (isFormFilled) {
-                            viewModel.signIn(
-                                email.value,password.value
-                            )
-                        }else{
-                            viewModel.errMsg.value = "Harap isi semua kolom"
-                        }
+                        viewModel.signIn(
+                            "ahmad.irza18@gmail.com", "12345678"
+                        )
+//                        if (isFormFilled) {
+//                            viewModel.signIn(
+//                                email.value,password.value
+//                            )
+//                        }else{
+//                            viewModel.errMsg.value = "Harap isi semua kolom"
+//                        }
                     },
                 contentAlignment = Alignment.Center
             ) {

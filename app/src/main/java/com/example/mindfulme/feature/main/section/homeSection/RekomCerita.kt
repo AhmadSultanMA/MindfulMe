@@ -17,10 +17,13 @@ import androidx.navigation.NavController
 import com.example.mindfulme.feature.main.components.buttonComp.LihatButton
 import com.example.mindfulme.feature.main.components.homeComp.CeritaCard
 import com.example.mindfulme.feature.main.route.Screen
+import com.example.mindfulme.model.cerita.CeritaModel
 import com.example.mindfulme.ui.theme.Purple10
 
 @Composable
-fun RekomCerita(navController: NavController) {
+fun RekomCerita(navController: NavController, cerita: List<CeritaModel>) {
+    val limitedCerita = cerita.take(3)
+
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp)) {
@@ -31,6 +34,9 @@ fun RekomCerita(navController: NavController) {
             })
         }
         Spacer(modifier = Modifier.height(16.dp))
-        CeritaCard()
+        limitedCerita.forEach { ceritaItem ->
+            CeritaCard(cerita = ceritaItem, navController = navController)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
     }
 }

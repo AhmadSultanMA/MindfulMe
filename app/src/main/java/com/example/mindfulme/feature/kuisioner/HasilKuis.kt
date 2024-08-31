@@ -32,6 +32,17 @@ import com.example.mindfulme.ui.theme.Purple6
 fun HasilKuis(navController: NavController) {
     val viewModel : KuisViewModel = viewModel()
 
+    val score = viewModel.user.value?.phqScore ?: -1
+
+    val text = when {
+        score in 0..4 -> "(Tidak ada depresi)"
+        score in 5..9 -> "(Gejala depresi ringan)"
+        score in 10..14 -> "(Depresi ringan)"
+        score in 15..19 -> "(Depresi sedang)"
+        score in 20..27 -> "(Depresi berat)"
+        else -> "(Skor tidak valid)"
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)
@@ -64,7 +75,7 @@ fun HasilKuis(navController: NavController) {
             Spacer(modifier = Modifier.height(5.dp))
             Box(modifier = Modifier.fillMaxWidth(0.9f), contentAlignment = Alignment.Center){
                 Text(
-                    text = "(Depresi ringan)",
+                    text = text,
                     style = MaterialTheme.typography.titleLarge,
                     color = Purple10,
                     textAlign = TextAlign.Center

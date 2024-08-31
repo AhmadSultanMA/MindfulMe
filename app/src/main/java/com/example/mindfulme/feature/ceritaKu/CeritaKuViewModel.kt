@@ -1,4 +1,4 @@
-package com.example.mindfulme.feature.cerita
+package com.example.mindfulme.feature.ceritaKu
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
@@ -9,7 +9,7 @@ import com.example.mindfulme.model.cerita.CeritaModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class CeritaViewModel: ViewModel() {
+class CeritaKuViewModel: ViewModel() {
     val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -17,20 +17,20 @@ class CeritaViewModel: ViewModel() {
     val isSelected = mutableStateOf("All")
     val cerita = mutableStateListOf<CeritaModel>()
 
-    fun getAllCerita(){
-       repository.getAllCerita(
-           onSuccess = {
-               cerita.clear()
-               cerita.addAll(it)
-           },
-           onFailed = {
-               Log.e("ERROR", it.toString())
-           }
-       )
+    fun getAllUserCerita(){
+        repository.getAllUserCerita(
+            onSuccess = {
+                cerita.clear()
+                cerita.addAll(it)
+            },
+            onFailed = {
+                Log.e("ERROR", it.toString())
+            }
+        )
     }
 
-    fun getCeritabyKategori(){
-        repository.getCeritabyKategori(
+    fun getUserCeritabyKategori(){
+        repository.getUserCeritabyKategori(
             isSelected.value,
             onSuccess = {
                 cerita.clear()

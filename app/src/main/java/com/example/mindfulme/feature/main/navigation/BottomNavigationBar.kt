@@ -2,9 +2,6 @@ package com.example.mindfulme.feature.main.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -18,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.mindfulme.ui.theme.Black3
 import com.example.mindfulme.ui.theme.Black5
 import com.example.mindfulme.ui.theme.Purple8
 
@@ -31,7 +29,7 @@ fun BottomNavigationBar(navController: NavController) {
     )
 
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = Black3,
         contentColor = Color.LightGray,
         tonalElevation = 24.dp,
         modifier = Modifier.fillMaxWidth()

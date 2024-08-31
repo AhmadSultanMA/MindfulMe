@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.mindfulme.feature.main.route.Screen
 import com.example.mindfulme.ui.theme.Black1
 import com.example.mindfulme.ui.theme.Purple1
@@ -34,7 +35,7 @@ import com.example.mindfulme.ui.theme.Purple6
 import com.example.mindfulme.ui.theme.Purple9
 
 @Composable
-fun AppBar() {
+fun AppBar(navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text(text = "Ruang Cerita", style = MaterialTheme.typography.displaySmall, color = Purple10)
@@ -46,7 +47,9 @@ fun AppBar() {
                     tint = Purple10
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Box(modifier = Modifier.background(color = Black1, shape = RoundedCornerShape(100)).padding(7.dp)){
+                Box(modifier = Modifier.background(color = Black1, shape = RoundedCornerShape(100)).padding(7.dp).clickable {
+                    navController.navigate(Screen.CeritaKu.route) { popUpTo(Screen.Cerita.route) { inclusive = true } }
+                }){
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             modifier = Modifier.size(18.dp),

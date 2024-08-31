@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Comment
@@ -21,15 +23,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.mindfulme.R
 import com.example.mindfulme.feature.main.components.buttonComp.BackPage
 import com.example.mindfulme.feature.main.route.Screen
@@ -39,7 +45,13 @@ import com.example.mindfulme.ui.theme.Purple3
 import com.example.mindfulme.ui.theme.Purple9
 
 @Composable
-fun BacaCerita(navController: NavController) {
+fun BacaCerita(navController: NavController, cerita_id: String) {
+    val viewModel : BacaCeritaViewModel = viewModel()
+
+    LaunchedEffect(key1 = true){
+        viewModel.getCeritabyId(cerita_id)
+    }
+
     Box(modifier = Modifier
         .background(color = Black1)
         .padding(16.dp)){
@@ -47,13 +59,13 @@ fun BacaCerita(navController: NavController) {
             item {
                 BackPage(onClick = {
                     navController.navigate(Screen.Cerita.route) {
-                        popUpTo(Screen.BacaCerita.route) { inclusive = true }
+                        popUpTo("${Screen.BacaCerita.route}/{cerita_id}") { inclusive = true }
                     }
                 }, text = "Baca Cerita")
                 Spacer(modifier = Modifier.height(32.dp))
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = "Melawan Badai dalam Diri",
+                        text = viewModel.cerita.value?.judul ?: "",
                         style = MaterialTheme.typography.displayMedium,
                         color = Purple9,
                         textAlign = TextAlign.Center,
@@ -104,23 +116,24 @@ fun BacaCerita(navController: NavController) {
                     .fillMaxWidth()
                     .height(130.dp), contentAlignment = Alignment.Center) {
                     Image(
-                        painter = painterResource(id = R.drawable.gambar_cerita),
+                        painter = rememberAsyncImagePainter(model = viewModel.cerita.value?.gambar ?: ""),
                         contentDescription = "gambar",
-                        contentScale = ContentScale.FillWidth,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .fillParentMaxWidth(0.9f)
-                            .fillParentMaxHeight()
+                            .fillMaxWidth(0.9f)
+                            .fillMaxHeight()
+                            .clip(shape = RoundedCornerShape(10.dp))
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(text = "Jessicca", style = MaterialTheme.typography.titleSmall, color = Black6)
+                    Text(text = viewModel.cerita.value?.penulis ?: "", style = MaterialTheme.typography.titleSmall, color = Black6)
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(text = "Aug 30, 2024", style = MaterialTheme.typography.titleSmall, color = Black6)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Aria adalah seorang wanita muda yang selalu tampak tegar di luar. Namun, di balik senyumannya, ia menyimpan badai emosi yang terus bergelora. Kehidupan yang penuh dengan tekanan membuat Aria terjebak dalam lingkaran kecemasan dan depresi. Ia berusaha untuk melawan badai dalam dirinya, tetapi semakin keras ia berjuang, semakin dalam ia tenggelam. Hingga suatu hari, ia bertemu dengan seseorang yang mampu membantunya menemukan jalan keluar dari kegelapan itu.",
+                    text = viewModel.cerita.value?.isi ?: "",
                     style = MaterialTheme.typography.labelMedium,
                     color = Purple9,
                     textAlign = TextAlign.Justify

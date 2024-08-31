@@ -1,13 +1,13 @@
-package com.example.mindfulme.feature.cerita
+package com.example.mindfulme.feature.ceritaKu
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,25 +36,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.mindfulme.feature.cerita.CategoryChip
+import com.example.mindfulme.feature.cerita.CeritaViewModel
+import com.example.mindfulme.feature.main.components.buttonComp.BackPage
 import com.example.mindfulme.feature.main.components.ceritaComp.CeritaCard
 import com.example.mindfulme.feature.main.navigation.BottomNavigationBar
 import com.example.mindfulme.feature.main.route.Screen
 import com.example.mindfulme.feature.main.section.ceritaSection.AppBar
 import com.example.mindfulme.ui.theme.Black1
-import com.example.mindfulme.ui.theme.Black3
 import com.example.mindfulme.ui.theme.Black4
-import com.example.mindfulme.ui.theme.Black5
 import com.example.mindfulme.ui.theme.Purple10
 import com.example.mindfulme.ui.theme.Purple3
 import com.example.mindfulme.ui.theme.Purple6
-import com.example.mindfulme.ui.theme.Purple9
-import kotlinx.coroutines.delay
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Cerita(navController: NavController) {
-    val viewModel : CeritaViewModel = viewModel()
+fun CeritaKu(navController: NavController) {
+    val viewModel: CeritaKuViewModel = viewModel()
 
     val categories = listOf(
         "All", "Romantis", "Keluarga", "Karir", "Hubungan",
@@ -64,80 +62,90 @@ fun Cerita(navController: NavController) {
 
     LaunchedEffect(viewModel.isSelected.value) {
         if (viewModel.isSelected.value == "All") {
-            viewModel.getAllCerita()
-        }else{
-            viewModel.getCeritabyKategori()
+            viewModel.getAllUserCerita()
+        } else {
+            viewModel.getUserCeritabyKategori()
         }
     }
 
-    Scaffold(
-        bottomBar = {
-            BottomAppBar(
-                tonalElevation = 1.dp,
-                containerColor = Black4,
-            ) {
-                BottomNavigationBar(navController = navController)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Purple3, Color.White)
+                )
+            )
+            .padding(16.dp)
+    ) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BackPage(onClick = {
+                        navController.navigate(Screen.Cerita.route) {
+                            popUpTo(Screen.CeritaKu.route) {
+                                inclusive = true
+                            }
+                        }
+                    }, text = "Ceritaku")
+                    Icon(
+                        modifier = Modifier.size(30.dp),
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = "iconSearch",
+                        tint = Purple10
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(categories) { category ->
+                        CategoryChip(
+                            text = category,
+                            isSelected = category == viewModel.isSelected.value,
+                            viewModel = viewModel
+                        )
+                    }
+                }
+            }
+            items(viewModel.cerita) { cerita ->
+                Spacer(modifier = Modifier.height(16.dp))
+                CeritaCard(
+                    cerita = cerita,
+                    navController = navController,
+                    uid = viewModel.auth.currentUser?.uid ?: ""
+                )
             }
         }
-    ) { innerPadding ->
-        Box(
+        Button(
             modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(Purple3, Color.White)
-                    )
-                )
-                .padding(innerPadding)
-                .padding(16.dp)
+                .align(Alignment.BottomEnd)
+                .size(70.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Purple10
+            ),
+            shape = CircleShape,
+            onClick = {
+                navController.navigate(Screen.BuatCerita.route) {
+                    popUpTo(Screen.Cerita.route) { inclusive = true }
+                }
+            }
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                item {
-                    AppBar(navController)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(categories) { category ->
-                            CategoryChip(
-                                text = category,
-                                isSelected = category == viewModel.isSelected.value,
-                                viewModel = viewModel
-                            )
-                        }
-                    }
-                }
-                items(viewModel.cerita) { cerita ->
-                    Spacer(modifier = Modifier.height(16.dp))
-                    CeritaCard(cerita = cerita, navController = navController, uid = viewModel.auth.currentUser?.uid ?: "")
-                }
-            }
-            Button(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .size(70.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Purple10
-                ),
-                shape = CircleShape,
-                onClick = {
-                    navController.navigate(Screen.BuatCerita.route) {
-                        popUpTo(Screen.Cerita.route) { inclusive = true }
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Edit,
-                    contentDescription = "iconPen",
-                    tint = Black1
-                )
-            }
+            Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = "iconPen",
+                tint = Black1
+            )
         }
     }
 }
 
 @Composable
-fun CategoryChip(text: String, isSelected: Boolean, viewModel: CeritaViewModel) {
+fun CategoryChip(text: String, isSelected: Boolean, viewModel: CeritaKuViewModel) {
     val backgroundColor = if (isSelected) Purple6 else Black1
     val textColor = if (isSelected) Black1 else Purple6
 

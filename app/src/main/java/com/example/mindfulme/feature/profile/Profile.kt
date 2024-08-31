@@ -1,34 +1,41 @@
-package com.example.mindfulme.feature.home
+package com.example.mindfulme.feature.profile
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.mindfulme.feature.main.components.ceritaComp.CeritaCard
 import com.example.mindfulme.feature.main.navigation.BottomNavigationBar
-import com.example.mindfulme.feature.main.section.homeSection.AppBar
+import com.example.mindfulme.feature.main.section.profileSection.AppBar
 import com.example.mindfulme.feature.main.section.homeSection.RekomCerita
 import com.example.mindfulme.feature.main.section.homeSection.RekomPsikolog
-import com.example.mindfulme.ui.theme.Black3
 import com.example.mindfulme.ui.theme.Black4
 import com.example.mindfulme.ui.theme.Black5
+import com.example.mindfulme.ui.theme.Purple10
+import com.example.mindfulme.ui.theme.Purple5
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Home(navController: NavController) {
-    val viewModel : HomeViewModel = viewModel()
+fun Profile(navController: NavController) {
+    val viewModel : ProfileViewModel = viewModel()
 
     Scaffold(bottomBar = {
         BottomAppBar(
@@ -38,14 +45,27 @@ fun Home(navController: NavController) {
             BottomNavigationBar(navController = navController)
         }
     }) {
-        Box(modifier = Modifier.background(Color.White)){
+        Box(modifier = Modifier
+            .background(Color.White)
+            .padding(16.dp)){
             LazyColumn(modifier = Modifier.fillMaxSize()){
                 item {
                     AppBar(navController = navController, viewModel.user.value?.nama ?: "")
                     Spacer(modifier = Modifier.height(16.dp))
-                    RekomPsikolog(navController)
+                    Text(
+                        text = "Ceritaku",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Purple5
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Spacer(modifier = Modifier
+                        .height(1.dp)
+                        .fillMaxWidth()
+                        .background(color = Black5))
+                }
+                items(viewModel.cerita) { cerita ->
                     Spacer(modifier = Modifier.height(16.dp))
-                    RekomCerita(navController, viewModel.cerita)
+                    CeritaCard(cerita = cerita, navController = navController, uid = viewModel.auth.currentUser?.uid ?: "")
                 }
             }
         }

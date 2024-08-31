@@ -2,6 +2,7 @@ package com.example.mindfulme.feature.main.components.homeComp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,12 +32,22 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.mindfulme.R
+import com.example.mindfulme.feature.main.route.Screen
+import com.example.mindfulme.model.cerita.CeritaModel
 import com.example.mindfulme.ui.theme.Black1
 import com.example.mindfulme.ui.theme.Purple10
 
 @Composable
-fun CeritaCard() {
+fun CeritaCard(cerita: CeritaModel, navController: NavController) {
+    val truncatedIsi = if (cerita.isi.length > 50) {
+        "${cerita.isi.take(50)}..."
+    } else {
+        cerita.isi
+    }
+
     Box(
         modifier = Modifier
             .height(130.dp)
@@ -45,7 +56,14 @@ fun CeritaCard() {
             .shadow(
                 elevation = 1.dp,
                 RoundedCornerShape(15)
-            ),
+            )
+            .clickable {
+                navController.navigate("${Screen.BacaCerita.route}/${cerita.id}") {
+                    popUpTo(Screen.Cerita.route) {
+                        inclusive = true
+                    }
+                }
+            },
     ){
         Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier
             .fillMaxSize()
@@ -53,12 +71,12 @@ fun CeritaCard() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(painter = painterResource(id = R.drawable.profile), contentDescription = "profile", modifier = Modifier.size(30.dp))
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "Jessicca", style = MaterialTheme.typography.titleLarge, color = Purple10)
+                Text(text = cerita.penulis, style = MaterialTheme.typography.titleLarge, color = Purple10)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Column(horizontalAlignment = Alignment.Start, modifier = Modifier.fillMaxWidth(0.6f)) {
-                    Text(text = "Saturday Workout", style = MaterialTheme.typography.titleLarge, color = Purple10)
-                    Text(text = "“Doing some yoga with my friend at the beach. You should do it ...”", style = MaterialTheme.typography.labelSmall, color = Purple10)
+                    Text(text = cerita.judul, style = MaterialTheme.typography.titleLarge, color = Purple10)
+                    Text(text = truncatedIsi, style = MaterialTheme.typography.labelSmall, color = Purple10)
                 }
                 Box(
                     modifier = Modifier
@@ -66,10 +84,12 @@ fun CeritaCard() {
                         .clip(RectangleShape)
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.gambar_cerita),
+                        painter = rememberAsyncImagePainter(model = cerita.gambar),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(8.dp))
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(8.dp))
                     )
                 }
             }
